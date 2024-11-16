@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Two Page Website</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom, #001f3f, #001d2e);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      background: #002b45;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      text-align: center;
+      width: 300px;
+    }
+    h1 {
+      font-size: 24px;
+      color: #00d1ff;
+      margin-bottom: 10px;
+    }
+    p {
+      margin: 5px 0 20px;
+      color: #bbbbbb;
+    }
+    .time {
+      font-weight: bold;
+      color: #ffffff;
+    }
+    input[type="text"] {
+      width: 90%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: none;
+      border-radius: 10px;
+      background: #ffffff20;
+      color: white;
+      outline: none;
+      text-align: center;
+    }
+    button {
+      width: 90%;
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .login-btn {
+      background: linear-gradient(to right, #00ff95, #00c8ff);
+    }
+    .login-btn:hover {
+      background: linear-gradient(to left, #00ff95, #00c8ff);
+    }
+    .other-btn {
+      background: #007bff;
+    }
+    .other-btn:hover {
+      background: #0056b3;
+    }
+    .dark-mode-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 10px;
+      gap: 10px;
+    }
+    footer {
+      margin-top: 15px;
+      font-size: 12px;
+      color: #999999;
+    }
+    .hidden {
+      display: none;
+    }
+    /* New styles for prediction page */
+    .prediction-box {
+      margin-top: 20px;
+      background: #003e58;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    }
+    .result-box {
+      margin-top: 20px;
+      background: #005a7c;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+    }
+    .result-box p {
+      font-size: 18px;
+      color: #00d1ff;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div id="loginPage" class="container">
+    <h1>Welcome to TANMAY'S SCRIPT</h1>
+    <p>Current Time: <span class="time" id="currentTime"></span></p>
+    <input type="text" id="keyInput" placeholder="Enter your key">
+    <button class="login-btn" onclick="checkKey()">Login</button>
+    <button class="other-btn" onclick="joinTelegram()">Join Telegram</button>
+    <button class="other-btn" onclick="register()">Register</button>
+    <div class="dark-mode-toggle">
+      <label for="darkModeSwitch">Dark Mode</label>
+      <input type="checkbox" id="darkModeSwitch" onclick="toggleDarkMode()">
+    </div>
+    <footer>© 2024 TANMAY'S SCRIPT. All rights reserved.</footer>
+  </div>
+
+  <div id="predictionPage" class="container hidden">
+    <h1>Prediction Page</h1>
+    <p>Welcome to the Prediction page. Here's where the magic happens!</p>
+    <div class="prediction-box">
+      <h3>Enter a 3-Digit Number:</h3>
+      <input type="text" id="periodInput" maxlength="3" placeholder="Enter 3 digits">
+      <button class="login-btn" onclick="getPrediction()">Get Result</button>
+    </div>
+    <div id="resultBox" class="result-box hidden">
+      <p id="predictionResult">Result: </p>
+    </div>
+    <button class="login-btn" onclick="goBack()">Back to Login</button>
+  </div>
+
+  <script>
+    // Update current time dynamically
+    function updateTime() {
+      const timeElement = document.getElementById("currentTime");
+      const now = new Date();
+      timeElement.textContent = now.toLocaleTimeString();
+    }
+    setInterval(updateTime, 1000);
+
+    // Placeholder functions for button actions
+    function joinTelegram() {
+      window.location.href = "https://telegram.org";
+    }
+
+    function register() {
+      alert("Register button clicked");
+    }
+
+    // Toggle Dark Mode
+    function toggleDarkMode() {
+      const body = document.body;
+      body.style.background =
+        body.style.background === "black"
+          ? "linear-gradient(to bottom, #001f3f, #001d2e)"
+          : "black";
+    }
+
+    // Check the entered key and navigate to Prediction Page
+    function checkKey() {
+      const key = document.getElementById("keyInput").value;
+      const loginPage = document.getElementById("loginPage");
+      const predictionPage = document.getElementById("predictionPage");
+
+      if (key === "TANMAY") { // Example: Correct key is "TANMAY"
+        loginPage.classList.add("hidden");
+        predictionPage.classList.remove("hidden");
+      } else {
+        alert("Incorrect Key. Please try again!");
+      }
+    }
+
+    // Navigate back to Login Page
+    function goBack() {
+      const loginPage = document.getElementById("loginPage");
+      const predictionPage = document.getElementById("predictionPage");
+
+      predictionPage.classList.add("hidden");
+      loginPage.classList.remove("hidden");
+    }
+
+    // Function to get the prediction result
+    function getPrediction() {
+      const periodInput = document.getElementById("periodInput").value;
+      const resultBox = document.getElementById("resultBox");
+      const predictionResult = document.getElementById("predictionResult");
+
+      if (periodInput.length !== 3 || isNaN(periodInput)) {
+        alert("Please enter a valid 3-digit number.");
+        return;
+      }
+
+      // Calculate the sum of the digits
+      const sum = periodInput.split('').reduce((acc, digit) => acc + parseInt(digit), 0);
+
+      // Check if the sum is even or odd
+      const result = sum % 2 === 0 ? "Small" : "Big";
+
+      // Display the result
+      predictionResult.textContent = `Result: ${result}`;
+      resultBox.classList.remove("hidden");
+    }
+  </script>
+</body>
+  </html>
+  
